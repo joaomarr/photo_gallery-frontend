@@ -20,9 +20,9 @@ new Vue({
   apolloProvider,
   render: (h) => h(App),
   async beforeMount() {
-    const token = await this.$store.dispatch('refreshToken')
+    const token = await this.$store.dispatch('Auth/refreshToken')
     if (token) {
-      await this.$store.dispatch('getUser')
+      await this.$store.dispatch('Auth/getUser')
     }
   }
 }).$mount('#app')
