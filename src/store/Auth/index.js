@@ -14,16 +14,16 @@ const state = {
 const mutations = {
     loginUser(state, userData) {
         state.profile = userData;
-      },
-      setTokens(state, tokens) {
-        Cookies.set(AUTH_REFRESH_TOKEN_COOKIE_NAME, tokens.refreshToken)
-        Cookies.set(AUTH_TOKEN_COOKIE_NAME, tokens.token)
-        state.isLoggedIn = true;
-      },
-      logout(state) {
-        state.isLoggedIn = false;
-        state.profile = null;
-      }
+    },
+    setTokens(state, tokens) {
+      Cookies.set(AUTH_REFRESH_TOKEN_COOKIE_NAME, tokens.refreshToken)
+      Cookies.set(AUTH_TOKEN_COOKIE_NAME, tokens.token)
+      state.isLoggedIn = true;
+    },
+    logout(state) {
+      state.isLoggedIn = false;
+      state.profile = null;
+    }
 }
 const actions = {
     async login(context, userData) {

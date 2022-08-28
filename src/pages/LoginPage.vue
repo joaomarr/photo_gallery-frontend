@@ -60,7 +60,7 @@ export default {
   }),
   methods: {
     ...mapActions({
-      login: 'login',
+      login: 'Auth/login',
     }),
     authenticateUser(){
       this.login(this.user)
