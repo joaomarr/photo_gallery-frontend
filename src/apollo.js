@@ -8,7 +8,7 @@ import {
 import Cookies from 'js-cookie'
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import { AUTH_TOKEN_COOKIE_NAME } from './constants'
+import { AUTH_TOKEN_COOKIE_NAME, AUTH_REFRESH_TOKEN_COOKIE_NAME } from './constants'
 
 // Install the vue plugin
 Vue.use(VueApollo)
@@ -25,7 +25,7 @@ const defaultOptions = {
   getAuth: (tokenName) => {
     const token = Cookies.get(tokenName)
     if (token) {
-      return 'Bearer ' + token
+      return 'JWT ' + token
     } else {
       return ''
     }
@@ -79,20 +79,10 @@ export function createProvider() {
   return apolloProvider
 }
 
-// Manually call this when user log in
-export async function onLogin(apolloClient) {
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
-  try {
-    await apolloClient.resetStore()
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (login)', 'color: orange;', e.message)
-  }
-}
-
 // Manually call this when user log out
 export async function onLogout(apolloClient) {
   // Remove both local and domain cookies on logout
+  Cookies.remove(AUTH_REFRESH_TOKEN_COOKIE_NAME)
   Cookies.remove(AUTH_TOKEN_COOKIE_NAME)
   Cookies.remove(AUTH_TOKEN_COOKIE_NAME, {
     domain: process.env.VUE_APP_ROOT_DOMAIN

@@ -1,4 +1,5 @@
 export const AUTH_TOKEN_COOKIE_NAME = 'jwt'
+export const AUTH_REFRESH_TOKEN_COOKIE_NAME = 'jwtRefresh'
 export const DATETIME_FORMAT = 'MMMM Do YYYY, h:mm a'
 export const DATE_FORMAT = 'MMMM Do YYYY'
 

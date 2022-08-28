@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// import { AUTH_TOKEN_COOKIE_NAME } from './constants'
+import { AUTH_TOKEN_COOKIE_NAME } from './constants'
 
-// import Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 
 import PageNotFound from '@/pages/PageNotFound.vue'
-import HomePage from '@/pages/Home.vue'
+import LoginPage from '@/pages/LoginPage.vue'
+import RegisterPage from '@/pages/RegisterPage.vue'
 
 const routes = [
   {
@@ -15,7 +16,8 @@ const routes = [
     name: 'not-found',
     meta: { layout: 'defaultLayout' }
   },
-  { path: '/', component: HomePage, name: 'home', meta: { layout: 'defaultLayout' } }
+  { path: '/login', component: LoginPage, name: 'login', meta: { layout: 'defaultLayout' } },
+  { path: '/register', component: RegisterPage, name: 'register', meta: { layout: 'defaultLayout' } },
 ]
 
 Vue.use(VueRouter)
@@ -24,18 +26,18 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   // redirect to login page if not logged in and trying to access a restricted page
-//   const publicPages = ['/']
-//   const isPublicPage = publicPages.includes(to.path)
-//   const authRequired = !isPublicPage
-//   const loggedIn = Cookies.get(AUTH_TOKEN_COOKIE_NAME)
+router.beforeEach((to, from, next) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  const publicPages = ['/login', '/register']
+  const isPublicPage = publicPages.includes(to.path)
+  const authRequired = !isPublicPage
+  const loggedIn = Cookies.get(AUTH_TOKEN_COOKIE_NAME)
 
-//   if (authRequired && !loggedIn) {
-//     return next('/')
-//   }
+  if (authRequired && !loggedIn) {
+    return next('/')
+  }
 
-//   next()
-// })
+  next()
+})
 
 export default router

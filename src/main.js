@@ -4,10 +4,7 @@ import App from './App.vue'
 import store from '@/store'
 import router from '@/router'
 
-import { createProvider, onLogin } from '@/apollo'
-
-import Cookies from 'js-cookie'
-import { AUTH_TOKEN_COOKIE_NAME } from './constants'
+import { createProvider } from '@/apollo'
 
 Vue.config.productionTip = false
 
@@ -23,10 +20,9 @@ new Vue({
   apolloProvider,
   render: (h) => h(App),
   async beforeMount() {
-    const token = Cookies.get(AUTH_TOKEN_COOKIE_NAME)
+    const token = await this.$store.dispatch('refreshToken')
     if (token) {
-      await onLogin(apolloProvider.defaultClient, token)
-      await this.$store.dispatch('login')
+      await this.$store.dispatch('getUser')
     }
   }
 }).$mount('#app')
