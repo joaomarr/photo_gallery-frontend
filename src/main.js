@@ -8,6 +8,11 @@ import { createProvider } from '@/apollo'
 
 Vue.config.productionTip = false
 
+import Cookies from 'js-cookie'
+import { AUTH_REFRESH_TOKEN_COOKIE_NAME } from './constants'
+import './assets/index.css'
+
+
 import DefaultLayout from './layouts/Default'
 Vue.component('defaultLayout', DefaultLayout)
 
@@ -20,8 +25,9 @@ new Vue({
   apolloProvider,
   render: (h) => h(App),
   async beforeMount() {
-    const token = await this.$store.dispatch('refreshToken')
+    const token = Cookies.get(AUTH_REFRESH_TOKEN_COOKIE_NAME)
     if (token) {
+      await this.$store.dispatch('refreshToken')
       await this.$store.dispatch('getUser')
     }
   }

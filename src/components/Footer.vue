@@ -1,8 +1,5 @@
 <template>
-  <footer class="footer">
-    <p>Version {% raw %}{{ version }}{% endraw %}</p>
-    <p>© 2022 João Vitor Marra</p>
-  </footer>
+  <footer class="h-20 w-full bg-gradient-to-t from-white fixed bottom-0"></footer>
 </template>
 
 <script>
@@ -15,11 +12,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.footer {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  text-align: center;
-}
-</style>

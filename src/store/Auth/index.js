@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+// import router from '@/router'
 import { apolloClient, onLogout } from '@/apollo'
 import { AUTH_TOKEN_COOKIE_NAME, AUTH_REFRESH_TOKEN_COOKIE_NAME } from '@/constants'
 
@@ -11,6 +12,7 @@ const state = {
     isLoggedIn: !!Cookies.get(AUTH_TOKEN_COOKIE_NAME),
     profile: null
 }
+
 const mutations = {
     loginUser(state, userData) {
         state.profile = userData;
@@ -26,53 +28,52 @@ const mutations = {
     }
 }
 const actions = {
-    async login(context, userData) {
+    async login(_, userData) {
         const resp = await apolloClient.mutate({
           mutation: login,
           variables: userData
         })
         const refreshToken = resp.data.tokenAuth.refreshToken
         const token = resp.data.tokenAuth.token
-        context.commit('setTokens', {refreshToken: refreshToken, token: token})
-        context.dispatch('getUser')
-      },
-      async logout({commit}) {
+
+        return {refreshToken: refreshToken, token: token}
+    },
+    async logout({commit}) {
+      await onLogout(apolloClient)
+      commit('logout')
+    },
+    async register(context, userData) {
+      userData.username = userData.firstName + ' ' + userData.lastName;
+      const resp = await apolloClient.mutate({
+        mutation: register,
+        variables: userData
+      })
+      const token = resp.data.register.token;
+      const refreshToken = resp.data.register.refreshToken;
+      context.commit('setTokens', {refreshToken: refreshToken, token: token})
+      context.dispatch('getUser')
+    },
+    async refreshToken({commit}) {
+      const token = {refreshToken: Cookies.get(AUTH_REFRESH_TOKEN_COOKIE_NAME)}
+      const resp = await apolloClient.mutate({
+        mutation: refreshToken,
+        variables: token,
+      })
+
+      if (resp.data.refreshToken.token !== null) {
+        commit('setTokens', {
+          refreshToken: resp.data.refreshToken.refreshToken,
+          token: resp.data.refreshToken.token
+        })
+      } else {
         await onLogout(apolloClient)
         commit('logout')
-      },
-      async register(context, userData) {
-        userData.username = userData.firstName + ' ' + userData.lastName;
-        const resp = await apolloClient.mutate({
-          mutation: register,
-          variables: userData
-        })
-        const token = resp.data.register.token;
-        const refreshToken = resp.data.register.refreshToken;
-        context.commit('setTokens', {refreshToken: refreshToken, token: token})
-        context.dispatch('getUser')
-      },
-      async refreshToken({commit}) {
-        const token = {refreshToken: Cookies.get(AUTH_REFRESH_TOKEN_COOKIE_NAME)}
-        const resp = await apolloClient.mutate({
-          mutation: refreshToken,
-          variables: token,
-        })
-        if (resp.data.refreshToken.token !== null) {
-          commit('setTokens', {
-            refreshToken: resp.data.refreshToken.refreshToken,
-            token: resp.data.refreshToken.token
-          })
-          return token
-        } else {
-          await onLogout(apolloClient)
-          commit('logout')
-          return false
-        }   
-      },
-      async getUser({commit}) {
-        const { data: { me }} = await apolloClient.query({ query: meQuery});
-        commit("loginUser", me)
-      },
+      }
+    },
+    async getUser({commit}) {
+      const { data: { me }} = await apolloClient.query({ query: meQuery});
+      commit("loginUser", me)
+    },
 }
 
 export default {

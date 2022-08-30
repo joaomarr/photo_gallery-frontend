@@ -8,6 +8,7 @@ import Cookies from 'js-cookie'
 import PageNotFound from '@/pages/PageNotFound.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
+import HomePage from '@/pages/HomePage.vue'
 
 const routes = [
   {
@@ -18,6 +19,7 @@ const routes = [
   },
   { path: '/login', component: LoginPage, name: 'login', meta: { layout: 'defaultLayout' } },
   { path: '/register', component: RegisterPage, name: 'register', meta: { layout: 'defaultLayout' } },
+  { path: '/', component: HomePage, name: 'home', meta: { layout: 'defaultLayout' } },
 ]
 
 Vue.use(VueRouter)
@@ -34,7 +36,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = Cookies.get(AUTH_TOKEN_COOKIE_NAME)
 
   if (authRequired && !loggedIn) {
-    return next('/')
+    return next('/login')
   }
 
   next()

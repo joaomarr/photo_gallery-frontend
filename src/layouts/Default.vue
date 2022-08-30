@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="relative">
     <app-topnav />
 
     <main>

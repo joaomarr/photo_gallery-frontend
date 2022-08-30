@@ -1,7 +1,8 @@
 <template>
-  <header>
-    Photo_gallery
-    <!-- <button v-if="isLoggedIn" @click="handleLogoutClick">Logout</button> -->
+  <header v-if="isLoggedIn" class="bg-gray-200 w-full h-20">
+    <nav class="flex justify-center items-center h-full">
+      <button @click="handleLogoutClick">Logout</button>
+    </nav>
   </header>
 </template>
 
@@ -16,7 +17,7 @@ export default {
   methods: {
     async handleLogoutClick() {
       await this.$store.dispatch('logout')
-      this.$router.push({ name: 'home' })
+      this.$router.push({ name: 'login' })
     }
   }
 }
