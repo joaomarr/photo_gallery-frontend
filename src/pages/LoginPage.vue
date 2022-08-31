@@ -83,6 +83,7 @@ export default {
       const { refreshToken, token } = await this.login(this.user)
       if (refreshToken && token) {
         this.$store.commit('setTokens', {refreshToken: refreshToken, token: token})
+        this.$store.dispatch('getUser')
         this.$router.push('/')
       } else {
         this.message = ["Your credentials are wrong, try again!", "text-red-500"]

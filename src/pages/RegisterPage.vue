@@ -100,6 +100,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+
 export default {
   name: 'LoginPage',
   metaInfo: {
@@ -126,6 +127,7 @@ export default {
       const { refreshToken, token } = await this.register(this.user)
       if (refreshToken && token) {
         this.$store.commit('setTokens', {refreshToken: refreshToken, token: token})
+        this.$store.dispatch('getUser')
         this.$router.push('/')
       } else {
         this.message = ["Must fill all required fields!", "text-red-500"]

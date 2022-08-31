@@ -6,13 +6,16 @@
     </div>
   </template>
   
-  <script>
+<script>
   export default {
-    name: 'HomePage'
+    name: 'HomePage',
+    mounted() {
+      this.$store.dispatch('getPhotos')
+    },
   }
-  </script>
-  
-  <style scoped>
-  
-  </style>
+</script>
+
+<style scoped>
+
+</style>
   
