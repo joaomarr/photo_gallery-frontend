@@ -7,7 +7,11 @@ const state = {
 
 const mutations = {
     setPhotos(state, photos) {
-        console.log(photos)
+        for (let photo in photos) {
+            const url = process.env.VUE_APP_AWS_BUCKET_URL + photos[photo].node.file.file
+            console.log("loop " + photo, url)
+            photos[photo].node.file.file = url
+        }
         state.photos = photos
     }
 }
