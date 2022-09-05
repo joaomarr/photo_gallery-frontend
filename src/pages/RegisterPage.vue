@@ -100,6 +100,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Loading from "../components/Loading" 
 
 export default {
   name: 'LoginPage',
@@ -116,13 +117,18 @@ export default {
       password2: "",
     },
     message: [],
+    isLoading: false,
   }),
   methods: {
     ...mapActions({
       register: 'register',
     }),
+    components: {
+      Loading
+    },
     async registerUser(){
       if (this.user.password1 !== this.user.password2) return this.message = ["Passwords don't match, try again", "text-red-500"]
+      this.isLoading = true;
       this.message = ["Signing in...", "text-blue-500"]
       const { refreshToken, token } = await this.register(this.user)
       if (refreshToken && token) {
@@ -132,6 +138,7 @@ export default {
       } else {
         this.message = ["Must fill all required fields!", "text-red-500"]
       }
+      this.isLoading = false;
     },
   }
 }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loading :isLoading="isLoading" />
     <section class="min-h-screen w-full flex flex-col items-center justify-center">
       <div class="w-full bg-[#f0f0f0f2] md:w-[500px]">
         <form @submit.prevent="authenticateUser">
@@ -60,6 +61,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import Loading from "../components/Loading" 
 
 export default {
   name: 'LoginPage',
@@ -73,13 +75,14 @@ export default {
       password: "",
     },
     message: [],
+    isLoading: false,
   }),
   methods: {
     ...mapActions({
       login: 'login',
     }),
     async authenticateUser(){
-      this.message = ["Signing in...", "text-blue-500"]
+      this.isLoading = true
       const { refreshToken, token } = await this.login(this.user)
       if (refreshToken && token) {
         this.$store.commit('setTokens', {refreshToken: refreshToken, token: token})
@@ -88,7 +91,11 @@ export default {
       } else {
         this.message = ["Your credentials are wrong, try again!", "text-red-500"]
       }
+      this.isLoading = false
     }
+  },
+  components: {
+    Loading
   }
 }
 </script>
