@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="relative">
+    <PortalTarget name="homeModal"></PortalTarget>
     <app-topnav />
 
     <main>

@@ -9,6 +9,7 @@ import PageNotFound from '@/pages/PageNotFound.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
 import HomePage from '@/pages/HomePage.vue'
+import PostModal from '@/components/PostModal.vue'
 
 const routes = [
   {
@@ -19,7 +20,19 @@ const routes = [
   },
   { path: '/login', component: LoginPage, name: 'login', meta: { layout: 'defaultLayout' } },
   { path: '/register', component: RegisterPage, name: 'register', meta: { layout: 'defaultLayout' } },
-  { path: '/', component: HomePage, name: 'home', meta: { layout: 'defaultLayout' } },
+  { 
+    path: '/', 
+    component: HomePage, 
+    name: 'home', 
+    meta: { layout: 'defaultLayout' },
+    children: [
+      {
+        path: '/post/:id',
+        component: PostModal.vue,
+        name: "postModal",
+      },
+    ],
+  },
 ]
 
 Vue.use(VueRouter)

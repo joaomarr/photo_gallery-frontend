@@ -71,7 +71,7 @@ const actions = {
       }
     },
     async getUser({commit}) {
-      const { data: { me }} = await apolloClient.query({ query: meQuery});
+      const { data: { me }} = await apolloClient.query({ query: meQuery} );
       commit("loginUser", me)
     },
 }

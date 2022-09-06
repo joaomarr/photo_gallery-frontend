@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export default gql`
-query posts {
-  posts {
+query posts ($id: ID) {
+  posts(id: $id) {
     edges {
         node {
             id,
