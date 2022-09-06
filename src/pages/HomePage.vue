@@ -1,9 +1,9 @@
 <template>
   <div class="section">
       <Loading :isLoading="isLoading" />
-      <div class="p-5 flex flex-wrap 2xl:justify-center">
-        <div v-for="photo in photos" :key="photo.id" class="pb-5 2xl:max-w-xl 2xl:px-5">
-          <img :src="photo.file.file"/>
+      <div class="image-gallery">
+        <div v-for="photo in photos" :key="photo.id">
+          <img :src="photo.file.file" />
         </div>
       </div>
     </div>
@@ -21,10 +21,12 @@ import Loading from "../components/Loading"
     async mounted() {
       if (!this.photos.length) { 
         await this.$store.dispatch('getPhotos') 
-        const photos = this.$store.state.Gallery.photos
-        photos.map(({ node }) => {
-          this.photos.push(node)
+        const photos = this.$store.state.Gallery.photos.filter(({ node }) => {
+          return node.isApproved
         })
+        for (let photo in photos) {
+          this.photos.push(photos[photo].node)
+        }
       }
       if (document.readyState == "complete") {
         this.isLoading = false;
@@ -37,6 +39,16 @@ import Loading from "../components/Loading"
 </script>
 
 <style scoped>
+.image-gallery {
+  @apply flex flex-wrap gap-3 p-5;
+}
 
+.image-gallery > div {
+  @apply h-28 cursor-pointer relative grow overflow-hidden rounded-md lg:h-40 2xl:h-72;
+}
+
+.image-gallery div img {
+  @apply object-cover w-full h-full object-center transition hover:scale-105;
+}
 </style>
   
