@@ -10,6 +10,7 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.6.6",
     "core-js": "^3.8.3",
+    "date-fns": "^2.29.2",
     "js-cookie": "^3.0.1",
     "portal-vue": "^2.1.7",
     "vue": "^2.6.14",

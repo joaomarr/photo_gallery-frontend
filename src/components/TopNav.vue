@@ -1,5 +1,5 @@
 <template>
-  <header v-if="isLoggedIn" class="bg-blue-500 w-full h-16">
+  <header v-if="isLoggedIn" class="bg-blue-500 w-full h-16 fixed">
     <nav class="flex px-6 justify-between items-center h-full text-white shadow-xl">
       <div class="flex flex-col">
         <span v-if="user.isStaff" class="text-xs">

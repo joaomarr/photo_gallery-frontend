@@ -3,7 +3,7 @@
     <PortalTarget name="homeModal"></PortalTarget>
     <app-topnav />
 
-    <main>
+    <main class="pt-16">
       <router-view />
     </main>
 
@@ -28,6 +28,7 @@ export default {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  box-sizing: content-box;
 }
 main {
   flex: 1;

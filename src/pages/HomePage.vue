@@ -69,5 +69,6 @@ import { mapActions } from 'vuex';
 .image-gallery a img {
   @apply object-cover w-full h-full object-center transition hover:scale-105;
 }
+
 </style>
   

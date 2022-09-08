@@ -7,9 +7,27 @@ query posts ($id: ID) {
         node {
             id,
             isApproved,
+            createdAt,
+            likes {
+              id,
+            },
+            commentSet {
+              edges {
+                node {
+                  owner {
+                    username
+                  },  
+                  text,
+                  created,
+                }
+              }
+            },
+            owner {
+              username,
+            },
             file {
               file,
-              id
+              id,
             },
         }
     }
