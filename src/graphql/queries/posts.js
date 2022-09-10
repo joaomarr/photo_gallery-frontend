@@ -19,6 +19,7 @@ query posts ($id: ID) {
                   },  
                   text,
                   created,
+                  id,
                 }
               }
             },
