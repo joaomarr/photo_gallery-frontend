@@ -1,4 +1,5 @@
 import { apolloClient } from '@/apollo'
+import toggleLikePost from '@/graphql/mutations/toggleLikePost'
 import posts from '@/graphql/queries/posts'
 
 const state = {
@@ -12,6 +13,19 @@ const mutations = {
             photos[photo].node.file.file = url
         }
         state.photos = photos
+    },
+    setTempLike(state, postId) {
+        state.photos.forEach(photo => { 
+            if (photo.node.id === postId) { 
+                const likesArr = photo.node.likes
+                if (likesArr.length || !likesArr.includes(state.profile.pk)) {
+                    likesArr.splice(likesArr.indexOf(state.profile.pk))
+                    return
+                }
+                likesArr.push(state.profile.pk)
+                photo.node.likes = likesArr;
+            } 
+        })
     }
 }
 
@@ -23,6 +37,11 @@ const actions = {
     async getPhoto(_, id) {
         const photo = this.state.photos.filter(photo => { return photo.node.id === id })
         return photo
+    },
+    async toggleLikePost({commit}, postId) {
+        const { data } = await apolloClient.mutate({ mutation: toggleLikePost, variables: { postId: postId } })
+        if (data.success) { commit('setTempLike', postId) }
+        return data
     }
 }
 

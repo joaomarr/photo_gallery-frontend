@@ -10,6 +10,7 @@ query meQuery {
     isFriend,
     isStaff,
     id,
+    pk,
   }
 }
 `

@@ -15,8 +15,8 @@
                             Posted at {{formattedDate(post.node.createdAt)}}
                         </span>
                     </div>
-                    <div class="relative w-fit h-fit">
-                        <span class="absolute rounded-full text-xs bg-blue-500 text-white w-4 h-4 flex justify-center items-center -right-2 -top-2 opacity-80">
+                    <div class="relative w-fit h-full cursor-pointer transition hover:scale-105" v-on:click="likePost()">
+                        <span class="absolute rounded-full text-xs bg-blue-500 text-white w-4 h-4 flex justify-center items-center -right-2 -top-1 opacity-80">
                             {{post.node.likes.length}}
                         </span>
                         <svg v-if="liked" class="w-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="0 0 256 256" xml:space="preserve">
@@ -87,19 +87,36 @@ import { formatDistanceToNow } from 'date-fns';
 export default {
     name: 'PostModal',
     data: () => ({
+        post: {},
+        comments: {},
         liked: false,
     }),
-    computed: {
-        post() {
-            return this.$store.state.Gallery.photos.filter(({ node }) => { return node.id === this.$route.params.id })[0]
-        },
-        comments() {
-            return this.post.node.commentSet.edges;
-        },
+    mounted() {
+        this.post = this.$store.state.Gallery.photos.filter(({ node }) => { return node.id === this.$route.params.id })[0]
+        this.comments = this.post.node.commentSet.edges;
+        this.liked = this.post.node.likes.some(like => like.id == this.$store.state.Auth.profile.pk)
     },
     methods: {
         formattedDate(date) {
             return formatDistanceToNow(new Date(date))
+        },
+        async likePost() {
+            const index = this.post.node.likes.findIndex(like => like.id == this.$store.state.Auth.profile.pk)
+            this.liked = !this.liked
+            if (this.post.node.likes[index]) {
+                this.post.node.likes.splice(index, 1)
+            } else {
+                this.post.node.likes.push({id: this.$store.state.Auth.profile.pk})
+            }
+            const { toggleLikePost } = await this.$store.dispatch('toggleLikePost', this.post.node.id);
+            if (toggleLikePost.success !== true) { 
+                this.liked = !this.liked
+                if (this.post.node.likes[index]) {
+                    this.post.node.likes.splice(index, 1)
+                } else {
+                    this.post.node.likes.push({id: this.$store.state.Auth.profile.pk})
+                }
+             }
         }
     }
 }
