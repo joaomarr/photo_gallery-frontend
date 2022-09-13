@@ -1,4 +1,5 @@
 import { apolloClient } from '@/apollo'
+import commentPost from '@/graphql/mutations/commentPost'
 import toggleLikePost from '@/graphql/mutations/toggleLikePost'
 import posts from '@/graphql/queries/posts'
 
@@ -21,11 +22,20 @@ const mutations = {
                 if (likesArr.length || !likesArr.includes(state.profile.pk)) {
                     likesArr.splice(likesArr.indexOf(state.profile.pk))
                     return
+                } else {
+                    likesArr.push(state.profile.pk)
+                    photo.node.likes = likesArr;
+                    return photo.node.likes;
                 }
-                likesArr.push(state.profile.pk)
-                photo.node.likes = likesArr;
             } 
         })
+    },
+    setTempComment(state, comment) {
+        state.photos.forEach(photo => {
+            if (photo.node.id == comment.id) {
+                return photo.node.commentSet.edges.push(comment)
+            }
+         })
     }
 }
 
@@ -41,6 +51,11 @@ const actions = {
     async toggleLikePost({commit}, postId) {
         const { data } = await apolloClient.mutate({ mutation: toggleLikePost, variables: { postId: postId } })
         if (data.success) { commit('setTempLike', postId) }
+        return data
+    },
+    async commentPost({commit}, comment) {
+        const { data } = await apolloClient.mutate({ mutation: commentPost, variables: comment })
+        if (data.success) { commit('setTempComment', comment) }
         return data
     }
 }

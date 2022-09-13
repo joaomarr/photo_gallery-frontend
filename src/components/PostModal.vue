@@ -64,17 +64,18 @@
                             </g>
                         </svg>
                     </div>
-                    <form class="h-full flex-1">
+                    <form class="h-full flex flex-1" @submit.prevent="commentPost">
                         <input 
                             type="text" 
-                            name="text" 
+                            required
+                            v-model="comment"
                             placeholder="Add a comment..." 
-                            class="text-xs text-gray-500 h-full w-full focus:outline-0"
+                            class="text-xs text-gray-500 flex-1 h-full focus:outline-0"
                         />
+                        <button class="w-fit text-xs text-blue-500/80 transition hover:text-blue-500">
+                            Publish
+                        </button>
                     </form>
-                    <button class="w-fit text-xs text-blue-500/80 transition hover:text-blue-500">
-                        Publish
-                    </button>
                 </div>
             </div>
         </div>
@@ -90,6 +91,7 @@ export default {
         post: {},
         comments: {},
         liked: false,
+        comment: '',
     }),
     mounted() {
         this.post = this.$store.state.Gallery.photos.filter(({ node }) => { return node.id === this.$route.params.id })[0]
@@ -117,6 +119,15 @@ export default {
                     this.post.node.likes.push({id: this.$store.state.Auth.profile.pk})
                 }
              }
+        },
+        async commentPost() {
+            if (!this.comment.length) { return }
+            const postData = { postId: this.post.node.id, text: this.comment }
+            this.comments.push(
+                {node: {text: this.comment, id: this.comments.length, created: new Date(), owner: {username: this.$store.state.Auth.profile.username}}}
+            )
+            this.comment = ''
+            await this.$store.dispatch('commentPost', postData)
         }
     }
 }
