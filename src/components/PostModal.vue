@@ -1,6 +1,7 @@
 <template>
     <div v-if="Object.keys(post).length !== 0">
-        <div class="modal-overlay"></div>
+        <div class="modal-overlay" @click="closeModal"></div>
+        <button class="close-button" @click="closeModal">X</button>
         <div class="root-visual flex-container">
             <div class="lvl1-el1-visual">
                 <img :src="post.node.file.file" />
@@ -128,17 +129,24 @@ export default {
             )
             this.comment = ''
             await this.$store.dispatch('commentPost', postData)
-        }
+        },
+        closeModal() {
+            this.$router.push('/');
+            this.post = {}
+        },
     }
 }
 </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
     .modal-overlay {
         @apply fixed top-0 bottom-0 left-0 right-0 bg-black/50 z-10 h-screen;
     }   
+
+    .close-button {
+        @apply text-white text-4xl fixed top-5 right-5 z-50;
+    }
 
     .flex-container {
         @apply flex flex-col;
@@ -185,7 +193,7 @@ export default {
     }
 
     .root-visual {
-        @apply h-[85vh] w-[85vw] min-w-[50vw] flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-2xl overflow-hidden z-50 xl:flex-row md:max-w-[75vw];
+        @apply h-[85vh] w-[85vw] min-w-[50vw] flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-sm shadow-2xl overflow-hidden z-50 xl:flex-row md:max-w-[75vw];
     }
 
 </style>

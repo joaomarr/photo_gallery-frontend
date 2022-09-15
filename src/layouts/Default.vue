@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="relative">
+  <div class="relative min-h-screen">
     <PortalTarget name="homeModal"></PortalTarget>
     <app-topnav />
 

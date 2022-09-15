@@ -1,5 +1,5 @@
 <template>
-  <div class="section min-h-screen">
+  <div class="section">
       <Portal to="homeModal" :disabled="this.$route.params && this.$route.params.id === openedPost">
         <PostModal :post="openedPost" />
       </Portal>
