@@ -10,10 +10,10 @@
         </span>
       </div>
       <div>
-        <span v-if="user.isStaff" class="font-bold pr-4">
+        <span v-if="user.isStaff" class="font-bold pr-4 text-xs">
           To Approve
         </span>
-        <button @click="handleLogoutClick" class="cursor-pointer underline text-gray-300">
+        <button @click="handleLogoutClick" class="cursor-pointer underline text-gray-300 text-xs">
           Logout
         </button>
       </div>

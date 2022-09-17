@@ -1,6 +1,7 @@
 import { apolloClient } from '@/apollo'
 import commentPost from '@/graphql/mutations/commentPost'
 import toggleLikePost from '@/graphql/mutations/toggleLikePost'
+import uploadPost from '@/graphql/mutations/uploadPost'
 import posts from '@/graphql/queries/posts'
 
 const state = {
@@ -57,6 +58,15 @@ const actions = {
         const { data } = await apolloClient.mutate({ mutation: commentPost, variables: comment })
         if (data.success) { commit('setTempComment', comment) }
         return data
+    },
+    async uploadPost(_, files) {
+        let success = true
+        for (let file of files) {
+            console.log(file)
+            const { data } = await apolloClient.mutate({ mutation: uploadPost, variables: { file: file } })
+            if (!data.success) { success = false }
+        }
+        return success
     }
 }
 

@@ -4,6 +4,7 @@
         <PostModal :post="openedPost" />
       </Portal>
       <Loading :isLoading="isLoading" />
+      <UploadForm />
       <div class="image-gallery">
         <router-link 
           :to="{
@@ -23,6 +24,7 @@
 import Loading from "../components/Loading"
 import PostModal from "../components/PostModal"
 import { mapActions } from 'vuex';
+import UploadForm from "@/components/UploadForm.vue";
 
   export default {
     name: 'HomePage',
@@ -51,15 +53,16 @@ import { mapActions } from 'vuex';
       }),
     },
     components: {
-      Loading,
-      PostModal,
-    }
+    Loading,
+    PostModal,
+    UploadForm
+}
   }
 </script>
 
 <style scoped>
 .image-gallery {
-  @apply flex flex-wrap gap-3 p-5;
+  @apply flex flex-wrap gap-3 p-5 bg-[#F1F1F1];
 }
 
 .image-gallery > a {
