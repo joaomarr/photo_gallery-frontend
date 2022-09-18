@@ -23,7 +23,6 @@
 <script>
 import Loading from "../components/Loading"
 import PostModal from "../components/PostModal"
-import { mapActions } from 'vuex';
 import UploadForm from "@/components/UploadForm.vue";
 
   export default {
@@ -34,23 +33,16 @@ import UploadForm from "@/components/UploadForm.vue";
       openedPost: '',
     }),
     async mounted() {
-      if (!this.photos.length) { 
+      if (!this.$store.state.Gallery.photos) { 
         await this.$store.dispatch('getPhotos') 
-        const photos = this.$store.state.Gallery.photos.filter(({ node }) => {
-          return node.isApproved
-        })
+      }
+      const photos = this.$store.state.Gallery.photos
         for (let photo in photos) {
           this.photos.push(photos[photo].node)
-        }
       }
       if (document.readyState == "complete") {
         this.isLoading = false;
       }
-    },
-    methods: {
-      ...mapActions({
-        getPhoto: 'getPhoto',
-      }),
     },
     components: {
     Loading,

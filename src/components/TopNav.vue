@@ -10,9 +10,13 @@
         </span>
       </div>
       <div>
-        <span v-if="user.isStaff" class="font-bold pr-4 text-xs">
+        <router-link 
+          :to="{name: 'approve'}"
+          v-if="user.isStaff" 
+          class="font-bold pr-4 text-xs"
+        >
           To Approve
-        </span>
+        </router-link>
         <button @click="handleLogoutClick" class="cursor-pointer underline text-gray-300 text-xs">
           Logout
         </button>

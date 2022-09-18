@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="relative min-h-screen">
     <PortalTarget name="homeModal"></PortalTarget>
+    <PortalTarget name="approveModal"></PortalTarget>
     <app-topnav />
 
     <main class="pt-16">

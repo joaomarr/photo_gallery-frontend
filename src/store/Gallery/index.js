@@ -5,7 +5,8 @@ import uploadPost from '@/graphql/mutations/uploadPost'
 import posts from '@/graphql/queries/posts'
 
 const state = {
-    photos: null
+    photos: null,
+    toApprove: null,
 }
 
 const mutations = {
@@ -14,8 +15,15 @@ const mutations = {
             const url = process.env.VUE_APP_AWS_BUCKET_URL + photos[photo].node.file.file
             photos[photo].node.file.file = url
         }
-        state.photos = photos
+        state.photos = photos;
     },
+    setToApprove(state, photos) { 
+        for (let photo in photos) {
+            const url = process.env.VUE_APP_AWS_BUCKET_URL + photos[photo].node.file.file
+            photos[photo].node.file.file = url
+        }
+        state.toApprove = photos;
+     },
     setTempLike(state, postId) {
         state.photos.forEach(photo => { 
             if (photo.node.id === postId) { 
@@ -42,8 +50,12 @@ const mutations = {
 
 const actions = {
     async getPhotos({commit}) {
-        const { data: { posts: { edges: photos } } } = await apolloClient.query({ query: posts });
+        const { data: { posts: { edges: photos } } } = await apolloClient.query({ query: posts, variables: { isApproved: true } });
         commit('setPhotos', photos)
+    },
+    async getToApprove({commit}) {
+        const { data: { posts: { edges: photos } } } = await apolloClient.query({ query: posts, variables: { isApproved: false } });
+        commit('setToApprove', photos)
     },
     async getPhoto(_, id) {
         const photo = this.state.photos.filter(photo => { return photo.node.id === id })
