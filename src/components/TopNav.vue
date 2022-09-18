@@ -12,10 +12,17 @@
       <div>
         <router-link 
           :to="{name: 'approve'}"
-          v-if="user.isStaff" 
+          v-if="user.isStaff && this.$route.name === 'home'" 
           class="font-bold pr-4 text-xs"
         >
           To Approve
+        </router-link>
+        <router-link 
+          :to="{name: 'home'}"
+          v-else-if="user.isStaff && this.$route.name === 'approve'" 
+          class="font-bold pr-4 text-xs"
+        >
+          Home
         </router-link>
         <button @click="handleLogoutClick" class="cursor-pointer underline text-gray-300 text-xs">
           Logout
