@@ -1,5 +1,6 @@
 import { apolloClient } from '@/apollo'
 import commentPost from '@/graphql/mutations/commentPost'
+import postApproval from '@/graphql/mutations/postApproval'
 import toggleLikePost from '@/graphql/mutations/toggleLikePost'
 import uploadPost from '@/graphql/mutations/uploadPost'
 import posts from '@/graphql/queries/posts'
@@ -79,6 +80,14 @@ const actions = {
             if (!data.success) { success = false }
         }
         return success
+    },
+    async postApproval(_, variables) {
+        console.log(variables)
+        const { data } = await apolloClient.mutate({ 
+            mutation: postApproval,
+            variables: variables
+            })
+        return data
     }
 }
 

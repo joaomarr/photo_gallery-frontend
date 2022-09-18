@@ -11,10 +11,16 @@
                 :key="photo.id"
             >
                 <div class="absolute bottom-1 right-1 w-20 flex justify-between">
-                    <button class="w-8 h-8 rounded-full bg-white/60 transition hover:scale-110 hover:brightness-110">
+                    <button 
+                        class="w-8 h-8 rounded-full bg-white/60 transition hover:scale-110 hover:brightness-110"
+                        v-on:click="postApproval(true, photo.id)"
+                    >
                         <img src="../assets/checkmark.png"/>
                     </button>
-                    <button class="w-8 h-8 rounded-full bg-white/60 transition hover:scale-110 hover:brightness-110">
+                    <button 
+                        class="w-8 h-8 rounded-full bg-white/60 transition hover:scale-110 hover:brightness-110"
+                        v-on:click="postApproval(false, photo.id)"
+                    >
                         <img src="../assets/xmark.png"/>
                     </button>
                 </div>
@@ -67,6 +73,11 @@ export default {
         formattedDate(date) {
             return formatDistanceToNow(new Date(date))
         },
+        async postApproval(approve, postId) {
+            const variables = { postId: postId, approve: approve }
+            const response = await this.$store.dispatch('postApproval', variables)
+            return response
+        }
     },
     components: {
         Loading,
