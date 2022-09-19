@@ -51,7 +51,7 @@ import ApproveModal from "../components/ApproveModal"
 import { formatDistanceToNow } from 'date-fns';
   
 export default {
-    name: 'HomePage',
+    name: 'ApprovePage',
     data:() => ({
         photos: [],
         isLoading: true,

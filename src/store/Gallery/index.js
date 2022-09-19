@@ -82,7 +82,6 @@ const actions = {
         return success
     },
     async postApproval(_, variables) {
-        console.log(variables)
         const { data } = await apolloClient.mutate({ 
             mutation: postApproval,
             variables: variables
